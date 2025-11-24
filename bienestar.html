@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bienestar</title>
+  <style>
+    :root{
+      --bg:#f6f8fb;
+      --card:#ffffff;
+      --accent:#2b7a78;
+      --muted:#6b7280;
+      --success:#16a34a;
+      --glass: rgba(255,255,255,0.7);
+      --radius:16px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background: linear-gradient(180deg,#eef6f6 0%, var(--bg) 100%);
+      color:#0f172a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:24px;
+      display:flex;
+      justify-content:center;
+    }
+    .wrap{
+      width:100%;
+      max-width:980px;
+      display:grid;
+      gap:18px;
+      grid-template-columns: 1fr 360px;
+      align-items:start;
+    }
+    header{
+      grid-column:1/-1;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+    h1{margin:0;font-size:1.4rem}
+    p.lead{margin:6px 0 0;color:var(--muted);font-size:0.95rem}
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow: 0 6px 20px rgba(15,23,42,0.06);
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size:1rem;
+    }
+    .main{
+      min-height:300px;
+    }
+    .section{
+      margin-bottom:14px;
+    }
+    .tips-list{display:grid;gap:8px}
+    .tip{
+      padding:10px;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(240,252,250,1), rgba(252,255,255,1));
+      border:1px solid rgba(43,122,120,0.06);
+    }
+    .muted{color:var(--muted);font-size:0.95rem}
+    .small{font-size:0.9rem}
+    button.btn{
+      background:var(--accent);
+      color:white;
+      border:0;
+      padding:10px 12px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      box-shadow: 0 6px 14px rgba(43,122,120,0.12);
+    }
+    button.ghost{
+      background:transparent;
+      color:var(--accent);
+      border:1px solid rgba(43,122,120,0.12);
+    }
+    .right-col{position:sticky; top:24px;}
+    .stat{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .stat .dot{
+      width:48px;height:48px;border-radius:12px;
+      display:inline-grid;place-items:center;font-weight:700;
+      background:linear-gradient(180deg,#e6f7f6,#f7fffd);
+      color:var(--accent);
+      border:1px solid rgba(43,122,120,0.06);
+    }
+    .quiz .question{font-weight:700}
+    .resp{margin-top:8px;display:flex;flex-direction:column;gap:8px}
+    input[type="radio"]{margin-right:8px}
+    .result{margin-top:10px;padding:10px;border-radius:10px;background:#f3f9f8;border:1px solid rgba(16,185,129,0.06)}
+    footer{grid-column:1/-1;text-align:center;color:var(--muted);font-size:0.85rem;margin-top:6px}
+    /* Responsive */
+    @media (max-width:900px){
+      .wrap{grid-template-columns:1fr; padding:12px}
+      .right-col{position:relative; top:0}
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap" role="main">
+    <header>
+      <div>
+        <h1>Bienestar y salud — guía práctica</h1>
+        <p class="lead">Consejos sencillos sobre salud física, mental y social para mejorar tu bienestar.</p>
+      </div>
+      <div class="muted small">Actualizado: <strong id="fecha">—</strong></div>
+    </header>
+
+
+    <!-- Columna principal -->
+    <section class="card main" aria-labelledby="intro-title">
+      <h2 id="intro-title">¿Qué es el bienestar?</h2>
+      <p class="muted small">
+        El <strong>bienestar</strong> es el equilibrio entre diferentes áreas de la vida: <em>salud física</em>, <em>salud mental</em>, <em>relaciones sociales</em> y un sentido de propósito. Cuidar el cuerpo y la mente ayuda a prevenir enfermedades, aumentar la energía y mejorar la calidad de vida.
+      </p>
+
+
+      <div class="section">
+        <h3>Áreas clave</h3>
+        <div class="tips-list">
+          <div class="tip"><strong>Salud física:</strong> actividad regular, alimentación balanceada, hidratación y sueño suficiente (7–9 h para la mayoría).</div>
+          <div class="tip"><strong>Salud mental:</strong> manejo del estrés, tiempo de descanso, actividades placenteras y pedir ayuda si la ansiedad o tristeza no mejoran.</div>
+          <div class="tip"><strong>Salud social:</strong> mantener relaciones cercanas, comunicar necesidades y pasar tiempo con personas que te apoyen.</div>
+          <div class="tip"><strong>Propósito y crecimiento:</strong> metas realistas, aprender cosas nuevas y hacer actividades significativas.</div>
+        </div>
+      </div>
+
+
+      <div class="section">
+        <h3>Consejos rápidos</h3>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" onclick="mostrarConsejo()">Mostrar consejo aleatorio</button>
+          <button class="ghost" onclick="iniciarRespiracion()">Respiración guiada (1 min)</button>
+          <button class="ghost" onclick="copiarResumen()">Copiar resumen</button>
+        </div>
+        <div id="consejoArea" style="margin-top:12px"></div>
+      </div>
+
+
+      <div class="section quiz card" aria-labelledby="quiz-title">
+        <h3 id="quiz-title">Mini test: ¿cómo estás hoy?</h3>
+        <p class="muted small">Contesta para recibir una sugerencia práctica.</p>
+        <div class="question small">1) ¿Has dormido bien las últimas noches?</div>
+        <div class="resp">
+          <label><input type="radio" name="q1" value="si">Sí, 7–9 horas</label>
+          <label><input type="radio" name="q1" value="casi">Casi, 5–6 horas</label>
+          <label><input type="radio" name="q1" value="no">Menos de 5 horas</label>
+        </div>
+<div class="question small" style="margin-top:8px">2) ¿Cómo calificarías tu nivel de estrés actual?</div>
+        <div class="resp">
+          <label><input type="radio" name="q2" value="bajo">Bajo</label>
+          <label><input type="radio" name="q2" value="medio">Medio</label>
+          <label><input type="radio" name="q2" value="alto">Alto</label>
+        </div>
+
+
+        <div style="margin-top:10px">
+          <button class="btn" onclick="evaluarQuiz()">Evaluar</button>
+          <div id="resultado" style="margin-top:10px"></div>
+        </div>
+      </div>
+
+
+      <div class="section">
+        <h3>Lectura breve: hábitos que ayudan</h3>
+        <ul class="muted small">
+          <li>Muévete 30 minutos al día (caminar, bailar, bicicleta).</li>
+          <li>Come frutas, verduras y proteínas; evita azúcares en exceso.</li>
+          <li>Duerme en horarios regulares; crea una rutina antes de dormir.</li>
+          <li>Habla con alguien cuando lo necesites; no cargues todo solo.</li>
+          <li>Reserva 15 minutos al día para algo que disfrutes.</li>
+        </ul>
+      </div>
+    </section>
+
+
+    <!-- Columna derecha -->
+    <aside class="right-col">
+      <div class="card" style="margin-bottom:12px">
+        <div class="stat">
+          <div class="dot"> ❤️</div>
+          <div>
+            <div style="font-weight:700">Consejo de hoy</div>
+            <div class="muted small">Camina 10 minutos ahora: mover el cuerpo ayuda a reducir estrés y mejora ánimo.</div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="card" style="margin-bottom:12px">
+        <h4 style="margin-top:0">Consejos de cuidado</h4>
+        <ol class="muted small">
+          <li> actividad física (30 min)</li>
+          <li>noche sin pantallas 1 h antes de dormir</li>
+          <li>contacto social (llamada o salir)</li>
+        </ol>
+      </div>
+
+
+      <div class="card">
+        <h4 style="margin-top:0">Recursos rápidos</h4>
+        <p class="muted small">Si sientes que tu salud o fisca llamanos a 55 56 2414 8867</p>
+        <button class="btn" onclick="mostrarLineaAyuda()">Líneas y recursos</button>
+        <div id="lineas" style="margin-top:10px"></div>
+      </div>
+    </aside>
+
+
+    <footer>
+     3107 equipo:1
+    </footer>
+  </main>
+
+
+  <script>
+    // poner la fecha actual en formato dd/mm/aaaa
+    (function setFecha(){
+      const f = new Date();
+      const dd = String(f.getDate()).padStart(2,'0');
+      const mm = String(f.getMonth()+1).padStart(2,'0');
+      const yyyy = f.getFullYear();
+      document.getElementById('fecha').textContent = dd + '/' + mm + '/' + yyyy;
+    })();
+
+
+    const consejos = [
+      'Bebe un vaso de agua al despertarte: ayuda a activar tu metabolismo y mente.',
+      'Haz una pausa cada 50 minutos de trabajo: levántate, estira y respira profundo.',
+      'Antes de dormir, escribe 3 cosas buenas que sucedieron hoy (mejorarás el ánimo).',
+      'Incluye una porción de verdura en al menos una comida principal.',
+      'Si estás estresado, intenta 4-4-4: inhalar 4s, sostener 4s, exhalar 4s por 1 minuto.'
+    ];
+
+
+    function mostrarConsejo(){
+      const i = Math.floor(Math.random()*consejos.length);
+      const area = document.getElementById('consejoArea');
+      area.innerHTML = <div class="tip"><strong>Consejo:</strong> ${consejos[i]}</div>;
+    }
+
+
+    function iniciarRespiracion(){
+      // simple animación textual de respiración
+      const area = document.getElementById('consejoArea');
+      let step = 0;
+      const fases = ['Inhala... 4s','Sostén... 4s','Exhala... 4s'];
+      area.innerHTML = <div class="tip"><strong>Respiración guiada:</strong> Sigue el texto. <span id="respText">${fases[0]}</span></div>;
+      const txt = document.getElementById('respText');
+      const interval = setInterval(()=>{
+        step = (step+1) % fases.length;
+        txt.textContent = fases[step];
+      }, 4000);
+      // detener después de 3 ciclos (~36s). Usamos 36s para no extender mucho.
+      setTimeout(()=>{ clearInterval(interval); area.innerHTML += '<div class="muted small" style="margin-top:8px">Listo — respira con normalidad.</div>'; }, 36000);
+    }
+
+
+    function copiarResumen(){
+      const texto = "Bienestar: equilibrio entre salud física, mental y social. Consejos: mover el cuerpo, dormir bien, hidratarse, pedir ayuda cuando se necesite.";
+      navigator.clipboard?.writeText(texto).then(()=>{
+        alert('Resumen copiado al portapapeles.');
+      }).catch(()=>{ alert('No se pudo copiar. Selecciona y copia manualmente.'); });
+    }
+
+
+    function evaluarQuiz(){
+      const q1 = document.querySelector('input[name="q1"]:checked');
+      const q2 = document.querySelector('input[name="q2"]:checked');
+      const res = document.getElementById('resultado');
+      if(!q1 || !q2){ res.innerHTML = '<div class="result">Por favor responde ambas preguntas.</div>'; return; }
+
+
+      let recomendacion = '';
+      if(q1.value === 'si' && q2.value === 'bajo'){
+        recomendacion = 'Excelente. Mantén tus rutinas: ejercicio regular y tiempo de descanso.';
+      } else if((q1.value === 'casi' || q1.value === 'no') && q2.value !== 'bajo'){
+        recomendacion = 'Intenta priorizar el sueño esta semana: establece una rutina nocturna y evita pantallas 1 h antes de dormir.';
+      } else if(q2.value === 'alto'){
+        recomendacion = 'Tu nivel de estrés es alto. Prueba técnicas de respiración y considera hablar con un amigo o profesional.';
+      } else {
+        recomendacion = 'Pequeños cambios: caminar 20 min, beber agua y tomar pausas regulares.';
+      }
+      res.innerHTML = <div class="result">${recomendacion}</div>;
+    }
+
+
+    function mostrarLineaAyuda(){
+      const area = document.getElementById('lineas');
+      area.innerHTML = `
+        <div class="muted small">
+          <strong>Recursos:</strong>
+          <ul>
+            <li>Línea de apoyo local (ejemplo): 123-456-789</li>
+            <li>Centro de salud más cercano: consulta en tu municipio</li>
+            <li>Si hay riesgo inmediato (p. ej. pensamientos suicidas), contacta emergencias locales.</li>
+          </ul>
+        </div>
+      `;
+    }
+
+
+    // accesibilidad: permitir ejecutar "mostrar consejo" con tecla 'C'
+    document.addEventListener('keydown', (e)=>{
+      if(e.key.toLowerCase()==='c') mostrarConsejo();
+      if(e.key.toLowerCase()==='r') iniciarRespiracion();
+    });
+  </script>
+
+
+  <a href="index.html" class="btn-back">Volver a la página principal</a>
+</body>
+</html>
+
+

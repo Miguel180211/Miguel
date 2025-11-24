@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tienda Económica - Medicinas (Con Carrito y Checkout)</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #f4f6f8;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #113f61 !important;
+        }
+        .navbar-brand {
+            color: #C7AE6A !important;
+            font-weight: 700;
+        }
+        .nav-link { color: #fff !important; }
+        .nav-link:hover { color: #C7AE6A !important; }
+
+        /* Title */
+        h2.section-title {
+            color: #113f61;
+            text-align: center;
+            margin-top: 28px;
+            font-weight: 700;
+        }
+ .btn-back {
+            background-color: #C7AE6A;
+            color: #113f61;
+            font-weight: bold;
+            padding: 12px 25px;
+            border: none;
+            margin-top: 30px;
+            transition: background 0.3s ease;
+        }
+
+
+        .btn-back:hover {
+            background-color: #e3c97a;
+        }
+
+        /* Search */
+        #searchBar {
+            max-width: 600px;
+            margin: 18px auto;
+            border-radius: 28px;
+            padding: 12px 18px;
+            border: 2px solid #113f61;
+            box-shadow: none;
+        }
+
+        /* Product cards */
+        .card {
+            border: none;
+            border-radius: 12px;
+            transition: transform .18s ease, box-shadow .18s ease;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        }
+        .card-img-top {
+            height: 220px;
+            object-fit: cover;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .price {
+            color: #113f61;
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+
+        .btn-buy {
+            background-color: #f7ca00;
+            border: none;
+            color: #113f61;
+            font-weight: 700;
+        }
+        .btn-buy:hover { background-color: #e0b700; }
+
+        /* Footer */
+        footer {
+            background-color: #092336;
+            color: #fff;
+            text-align: center;
+            padding: 18px;
+            margin-top: 36px;
+        }
+
+        /* Small helper */
+        .muted-small { font-size: 0.9rem; color: #666; }
+
+        /* Checkout section spacing */
+        #checkoutSection { padding: 36px 0 80px 0; }
+
+        /* Responsive tweaks */
+        @media (max-width: 576px) {
+            .card-img-top { height: 180px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark px-4">
+        <a class="navbar-brand" href="#">Salud y Bienestar</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menuNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item me-3"><a class="incio.html" href="inicio.html">Inicio</a></li>
+                <li class="nav-item me-3"><a class="nav-link" href="servicio.html">Servicios</a></li>
+                <li class="nav-item me-3"><a class="nav-link" href="#storeSection">Económico</a></li>
+                <li class="nav-item me-3"><a class="nav-link" href="Contacto.html">Contacto</a></li>
+
+                <!-- Cart button with counter -->
+                <li class="nav-item ms-3">
+                    <button class="btn btn-outline-light position-relative" id="openCartBtn" data-bs-toggle="modal" data-bs-target="#cartModal">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span id="cartCounter" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+                    </button>
+                </li>
+
+                <!-- Checkout quick link -->
+                <li class="nav-item ms-2">
+                    <a class="btn btn-warning" href="#checkoutSection" style="color:#113f61; font-weight:700;">
+                        <i class="fa-solid fa-credit-card"></i> Checkout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- PAGE TITLE -->
+    <h2 class="section-title">Tienda Económica de Medicinas</h2>
+
+    <!-- SEARCH -->
+    <div class="container">
+        <input id="searchBar" type="text" class="form-control" placeholder="Buscar medicamento (ej. paracetamol, ibuprofeno, vitamina)...">
+    </div>
+
+    <!-- STORE / PRODUCTS -->
+    <section id="storeSection" class="container my-4">
+        <div class="row g-4" id="productGrid">
+            <!-- Products rendered by JS -->
+        </div>
+    </section>
+
+    <!-- CHECKOUT SECTION -->
+    <section id="checkoutSection" class="container" style="display: none;">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="card p-4 mb-4">
+                    <h4 class="mb-3">Información de envío</h4>
+                    <form id="checkoutForm">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre completo</label>
+                            <input required type="text" id="fullname" class="form-control" placeholder="Nombre y apellido">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Correo electrónico</label>
+                            <input required type="email" id="email" class="form-control" placeholder="tucorreo@ejemplo.com">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Teléfono</label>
+                            <input required type="tel" id="phone" class="form-control" placeholder="(55) 1234 5678">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Dirección</label>
+                            <input required type="text" id="address" class="form-control" placeholder="Calle, número, colonia, ciudad">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Método de pago</label>
+                            <select id="paymentMethod" class="form-select" required>
+                                <option value="tarjeta">Tarjeta (simulada)</option>
+                                <option value="efectivo">Efectivo a la entrega</option>
+                            </select>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">Realizar pedido</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card p-3">
+                    <h5>Resumen de tu pedido</h5>
+                    <div id="checkoutSummary" class="mt-3">
+                        <!-- Lista y total generada por JS -->
+                        <p class="muted-small">No hay productos en el carrito.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACTO (simple footer anchor) -->
+    <section id="contactoSection" class="container my-5">
+        <div class="card p-4">
+            <h5>Contacto</h5>
+            <p class="mb-1 muted-small">Correo: ejemplo@saludybienestar.local</p>
+            <p class="mb-0 muted-small">Tel: (55) 1234 5678</p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        © 2025 José Miguel Arzate Villaseñor 3107 | Página creada con HTML, CSS y Bootstrap
+    </footer>
+
+    <!-- CART MODAL -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fa-solid fa-cart-shopping"></i> Tu carrito</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="cartItemsContainer">
+                        <!-- Items inserted by JS -->
+                    </div>
+                    <div class="mt-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <button id="clearCartBtn" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash"></i> Vaciar carrito</button>
+                        </div>
+                        <div>
+                            <strong>Subtotal:</strong> <span id="cartSubtotal">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#checkoutSection" id="goToCheckoutBtn" class="btn btn-primary">Ir a Checkout</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continuar comprando</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        /*******************************
+         * Productos (ID, nombre, precio, imagen, descripcion, etiquetas)
+         *******************************/
+        const PRODUCTS = [
+            { id: "p1", name: "Paracetamol 500 mg", price: 49, img: "https://www.ifarma.com.mx/wp-content/uploads/7502209850934.jpg", desc: "Caja con 10 tabletas", tags: "paracetamol analgesico fiebre dolor" },
+            { id: "p2", name: "Ibuprofeno 400 mg", price: 69, img: "https://www.fahorro.com/media/catalog/product/7/5/7503006569623.png?optimize=medium&bg-color=255,255,255&fit=bounds&height=&width=&canvas=:&format=jpeg", desc: "Antiinflamatorio y analgésico", tags: "ibuprofeno antiinflamatorio dolor fiebre" },
+            { id: "p3", name: "Vitamina C 1000 mg", price: 119, img: "https://cloudinary.images-iherb.com/image/upload/f_auto,q_auto:eco/images/now/now00682/y/23.jpg", desc: "60 tabletas", tags: "vitamina c inmunidad vitamina" },
+            { id: "p4", name: "Inhalador Salbutamol", price: 149, img: "https://vidafarma.com.mx/cdn/shop/files/Capturadepantalla2025-07-01010857.png?v=1751355690", desc: "Alivio para asma", tags: "salbutamol inhalador asma broncodilatador" },
+            { id: "p5", name: "Jarabe Antigripal 120ml", price: 89, img: "https://chedrauimx.vtexassets.com/arquivos/ids/57770793-800-auto?v=638979099540470000&width=800&height=auto&aspect=true", desc: "Alivia tos y congestión", tags: "jarabe antigripal tos gripe" },
+            { id: "p6", name: "Amoxicilina 500 mg", price: 129, img: "https://resources.sanborns.com.mx/imagenes-sanborns-ii/1200/7501349021570.jpg", desc: "Tratamiento antibiótico", tags: "amoxicilina antibiotico infeccion" },
+            { id: "p7", name: "Antialérgico Loratadina", price: 79, img: "https://medicamentosmk.com/static/images/loratadina-mk.webp", desc: "Alivio de alergias", tags: "loratadina alergia antialergico" },
+            { id: "p8", name: "Multivitamínico Adultos", price: 199, img: "https://i-cf65.ch-static.com/content/dam/cf-consumer-healthcare/bp-wellness-centrum/es_ES/sliced-images/global/products/new/latest/multicentrum-adultos.jpg?auto=format", desc: "30 cápsulas", tags: "multivitaminico vitaminas salud" },
+            { id: "p9", name: "Antibiótico Azitromicina", price: 179, img: "https://www.lasanteca.com/userfiles/2018/12/AZITROMICINA-500MG-CAJA-POR-3-TABLETAS-CON-BLISTER.jpg", desc: "Tratamiento bajo receta", tags: "azitromicina antibiotico infeccion" },
+            { id: "p10", name: "Crema Antiséptica 30g", price: 59, img: "https://eviter.com/cdn/shop/files/1_14.webp?v=1760723074&width=2048", desc: "Cicatriza y limpia heridas", tags: "crema antiseptica herida cuidado" },
+            { id: "p11", name: "Termómetro Digital", price: 259, img: "https://www.meidashop.com.mx/wp-content/uploads/2021/12/termometro-digital.png", desc: "Mide fiebre rápidamente", tags: "termometro temperatura fiebre" },
+            { id: "p12", name: "Gel antibacterial 250ml", price: 89, img: "https://i5.walmartimages.com/asr/13a9200e-4297-4e52-a6d7-e8d83f420f49.4db738a7a13ebb7cc4d8da80d494c159.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF", desc: "Limpieza rápida de manos", tags: "gel antibacterial higiene manos" }
+        ];
+
+        /*******************************
+         * Carrito (persistencia en localStorage)
+         *******************************/
+        const CART_KEY = "tienda_cart_v1";
+
+        function loadCart() {
+            const raw = localStorage.getItem(CART_KEY);
+            if (!raw) return {};
+            try {
+                return JSON.parse(raw);
+            } catch {
+                return {};
+            }
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem(CART_KEY, JSON.stringify(cart));
+            updateCartCounter();
+        }
+
+        // carrito como objeto { productId: qty }
+        let cart = loadCart();
+
+        /*******************************
+         * Renderizar productos
+         *******************************/
+        const productGrid = document.getElementById("productGrid");
+        const searchBar = document.getElementById("searchBar");
+        const cartCounter = document.getElementById("cartCounter");
+        const cartItemsContainer = document.getElementById("cartItemsContainer");
+        const cartSubtotalEl = document.getElementById("cartSubtotal");
+        const checkoutSection = document.getElementById("checkoutSection");
+        const checkoutSummary = document.getElementById("checkoutSummary");
+        const goToCheckoutBtn = document.getElementById("goToCheckoutBtn");
+
+        function formatMoney(n) {
+            return "$" + n.toFixed(2) + " MXN";
+        }
+
+        function renderProducts(list = PRODUCTS) {
+            productGrid.innerHTML = "";
+            list.forEach(p => {
+                const col = document.createElement("div");
+                col.className = "col-md-4 product-card";
+                col.setAttribute("data-tags", (p.tags + " " + p.name).toLowerCase());
+                col.innerHTML = `
+                    <div class="card shadow h-100">
+                        <img src="${p.img}" class="card-img-top" alt="${p.name}">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">${p.name}</h5>
+                            <p class="price mb-1">${formatMoney(p.price)}</p>
+                            <p class="muted-small mb-3">${p.desc}</p>
+                            <div class="mt-auto">
+                                <button class="btn btn-buy w-100 add-to-cart" data-id="${p.id}">
+                                    <i class="fa-solid fa-cart-shopping me-2"></i>Agregar al carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                productGrid.appendChild(col);
+            });
+
+            // agregar listeners a botones
+            document.querySelectorAll(".add-to-cart").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    addToCart(btn.dataset.id);
+                });
+            });
+        }
+
+        // Inicial render
+        renderProducts();
+
+        /*******************************
+         * Buscador (filtrado en tiempo real)
+         *******************************/
+        searchBar.addEventListener("input", () => {
+            const q = searchBar.value.trim().toLowerCase();
+            document.querySelectorAll(".product-card").forEach(card => {
+                const tags = card.getAttribute("data-tags");
+                if (!q || tags.includes(q)) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+
+        /*******************************
+         * Funciones del carrito
+         *******************************/
+        function addToCart(productId, qty = 1) {
+            // suma cantidad
+            cart[productId] = (cart[productId] || 0) + qty;
+            saveCart(cart);
+            renderCartModal();
+            // animación simple: abrir modal brevemente o notificar
+            const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+            cartModal.show();
+        }
+
+        function updateCartCounter() {
+            const totalItems = Object.values(cart).reduce((s, q) => s + q, 0);
+            cartCounter.textContent = totalItems;
+            if (totalItems === 0) {
+                cartCounter.style.display = "none";
+            } else {
+                cartCounter.style.display = "inline-block";
+            }
+        }
+
+        function renderCartModal() {
+            cartItemsContainer.innerHTML = "";
+            const ids = Object.keys(cart);
+            if (ids.length === 0) {
+                cartItemsContainer.innerHTML = `<p class="muted-small">Tu carrito está vacío.</p>`;
+                cartSubtotalEl.textContent = formatMoney(0);
+                renderCheckoutSummary();
+                updateCartCounter();
+                return;
+            }
+
+            let subtotal = 0;
+            ids.forEach(id => {
+                const product = PRODUCTS.find(p => p.id === id);
+                const qty = cart[id];
+                const lineTotal = product.price * qty;
+                subtotal += lineTotal;
+
+                const itemRow = document.createElement("div");
+                itemRow.className = "d-flex align-items-center mb-3 border-bottom pb-3";
+
+                itemRow.innerHTML = `
+                    <img src="${product.img}" style="width:84px;height:64px;object-fit:cover;border-radius:8px" class="me-3">
+                    <div class="flex-fill">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong>${product.name}</strong>
+                                <div class="muted-small">${product.desc}</div>
+                            </div>
+                            <div class="text-end">
+                                <div class="price">${formatMoney(lineTotal)}</div>
+                                <div class="muted-small">${formatMoney(product.price)} c/u</div>
+                            </div>
+                        </div>
+                        <div class="mt-2 d-flex gap-2 align-items-center">
+                            <div class="input-group input-group-sm" style="width:110px;">
+                                <button class="btn btn-outline-secondary btn-decr" data-id="${id}" type="button">-</button>
+                                <input type="text" class="form-control text-center qty-input" data-id="${id}" value="${qty}" style="height:34px;">
+                                <button class="btn btn-outline-secondary btn-incr" data-id="${id}" type="button">+</button>
+                            </div>
+                            <button class="btn btn-link text-danger btn-remove" data-id="${id}"><i class="fa-regular fa-trash-can"></i> Eliminar</button>
+                        </div>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(itemRow);
+            });
+
+            cartSubtotalEl.textContent = formatMoney(subtotal);
+            // attach listeners
+            document.querySelectorAll(".btn-remove").forEach(b => {
+                b.addEventListener("click", () => {
+                    const id = b.dataset.id;
+                    delete cart[id];
+                    saveCart(cart);
+                    renderCartModal();
+                });
+            });
+
+            document.querySelectorAll(".btn-incr").forEach(b => {
+                b.addEventListener("click", () => {
+                    const id = b.dataset.id;
+                    cart[id] = (cart[id] || 0) + 1;
+                    saveCart(cart);
+                    renderCartModal();
+                });
+            });
+
+            document.querySelectorAll(".btn-decr").forEach(b => {
+                b.addEventListener("click", () => {
+                    const id = b.dataset.id;
+                    if (!cart[id]) return;
+                    cart[id] = cart[id] - 1;
+                    if (cart[id] <= 0) delete cart[id];
+                    saveCart(cart);
+                    renderCartModal();
+                });
+            });
+
+            // qty inputs
+            document.querySelectorAll(".qty-input").forEach(inp => {
+                inp.addEventListener("change", () => {
+                    const id = inp.dataset.id;
+                    let val = parseInt(inp.value) || 0;
+                    if (val <= 0) { delete cart[id]; } else { cart[id] = val; }
+                    saveCart(cart);
+                    renderCartModal();
+                });
+            });
+
+            renderCheckoutSummary();
+            updateCartCounter();
+        }
+
+        // vaciar carrito
+        document.getElementById("clearCartBtn").addEventListener("click", () => {
+            if (!confirm("¿Deseas vaciar todo el carrito?")) return;
+            cart = {};
+            saveCart(cart);
+            renderCartModal();
+        });
+
+        // ir a checkout desde modal: abrir sección y cerrar modal
+        goToCheckoutBtn.addEventListener("click", (e) => {
+            // cerrar modal
+            const modalEl = document.getElementById('cartModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) modal.hide();
+            // mostrar checkout y hacer scroll
+            showCheckoutSection();
+        });
+
+        /*******************************
+         * Checkout summary & form
+         *******************************/
+        function renderCheckoutSummary() {
+            const ids = Object.keys(cart);
+            if (ids.length === 0) {
+                checkoutSummary.innerHTML = `<p class="muted-small">No hay productos en el carrito.</p>`;
+                return;
+            }
+            let subtotal = 0;
+            let html = `<ul class="list-group">`;
+            ids.forEach(id => {
+                const p = PRODUCTS.find(x => x.id === id);
+                const qty = cart[id];
+                const line = p.price * qty;
+                subtotal += line;
+                html += `
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="fw-bold">${p.name}</div>
+                            <div class="muted-small">${qty} x ${formatMoney(p.price)}</div>
+                        </div>
+                        <div class="text-end">${formatMoney(line)}</div>
+                    </li>
+                `;
+            });
+            html += `</ul>`;
+            html += `<div class="mt-3 d-flex justify-content-between"><strong>Subtotal:</strong><strong>${formatMoney(subtotal)}</strong></div>`;
+            checkoutSummary.innerHTML = html;
+            // If checkout section hidden, show small note in modal
+        }
+
+        // mostrar sección checkout
+        function showCheckoutSection() {
+            checkoutSection.style.display = "";
+            // scroll to checkout
+            setTimeout(() => {
+                document.getElementById("checkoutSection").scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 150);
+        }
+
+        // manejar envio de formulario
+        document.getElementById("checkoutForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            // validar carrito no vacío
+            if (Object.keys(cart).length === 0) {
+                alert("Tu carrito está vacío. Agrega productos antes de realizar el pedido.");
+                return;
+            }
+            // recolectar datos (aquí solo simulamos)
+            const customer = {
+                name: document.getElementById("fullname").value.trim(),
+                email: document.getElementById("email").value.trim(),
+                phone: document.getElementById("phone").value.trim(),
+                address: document.getElementById("address").value.trim(),
+                payment: document.getElementById("paymentMethod").value
+            };
+
+            // Simulación de "envío" -> mostrar resumen breve y limpiar carrito
+            const ids = Object.keys(cart);
+            let total = 0;
+            ids.forEach(id => {
+                const p = PRODUCTS.find(x => x.id === id);
+                total += p.price * cart[id];
+            });
+
+            // Mensaje de confirmación
+            const summary = `
+                Pedido realizado con éxito.\n\nCliente: ${customer.name}\nCorreo: ${customer.email}\nTotal: ${formatMoney(total)}\n\nGracias por tu compra (simulada).`;
+            alert(summary);
+
+            // Limpiar carrito
+            cart = {};
+            saveCart(cart);
+            renderCartModal();
+            renderCheckoutSummary();
+
+            // reset form
+            document.getElementById("checkoutForm").reset();
+            // opcional: esconder checkout
+            setTimeout(() => {
+                checkoutSection.style.display = "none";
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }, 500);
+        });
+
+        /*******************************
+         * Inicializar UI
+         *******************************/
+        // mostrar inicialmente el contador (si 0, ocultarlo)
+        updateCartCounter();
+        // render modal items
+        renderCartModal();
+
+        // render products (already done initially), but ensure buttons wired after loading
+        renderProducts(PRODUCTS);
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+     <div class="text-center">
+        <a href="index.html" class="btn-back">Volver a la página principal</a>
+    </div>
+</body>
+</html>
+
+

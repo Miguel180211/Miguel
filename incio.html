@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Inicio - Salud y Bienestar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <style>
+        /* ==== ESTILO GENERAL ==== */
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        /* ==== NAVBAR ==== */
+        .navbar {
+            background-color: #113f61 !important;
+        }
+
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #C7AE6A !important;
+        }
+
+
+        .nav-link {
+            color: #fff !important;
+        }
+
+
+        .nav-link:hover {
+            color: #C7AE6A !important;
+        }
+
+
+        /* ==== CONTENIDO PRINCIPAL ==== */
+        .content {
+            text-align: center;
+            padding: 100px 20px 40px 20px;
+        }
+
+
+        .content h1 {
+            color: #113f61;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+
+        .content p {
+            color: #444;
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+
+        /* ==== TARJETAS DE OPCIONES ==== */
+        .card-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            padding: 50px 10%;
+        }
+
+
+        .card {
+            width: 18rem;
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+
+        .card img {
+            height: 180px;
+            object-fit: cover;
+        }
+
+
+        .card-body {
+            background-color: #f9f9f9;
+        }
+
+
+        .card-title {
+            color: #113f61;
+            font-weight: bold;
+        }
+
+
+        .btn-primary {
+            background-color: #195b8c;
+            border: none;
+        }
+
+
+        .btn-primary:hover {
+            background-color: #0f3b61;
+        }
+
+
+        /* ==== BOTÓN DE REGRESO ==== */
+        .btn-back {
+            background-color: #C7AE6A;
+            color: #113f61;
+            font-weight: bold;
+            padding: 12px 25px;
+            border: none;
+            margin-top: 30px;
+            transition: background 0.3s ease;
+        }
+
+
+        .btn-back:hover {
+            background-color: #e3c97a;
+        }
+
+
+        /* ==== FOOTER ==== */
+        footer {
+            background-color: #092336;
+            color: #fff;
+            text-align: center;
+            padding: 20px 10px;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">salud y bienestar agenda 2030</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <!-- ✅ Conecta hacia el inicio principal -->
+                    <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Noticias</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="content">
+        <h1>Bienvenido a Salud y Bienestar</h1>
+        <p>
+            Explora los pilares fundamentales del bienestar humano y conoce cómo cada uno contribuye a una vida más saludable, plena y feliz.
+        </p>
+    </div>
+
+
+    <!-- TARJETAS DE OPCIONES -->
+    <div class="card-group">
+        <div class="card">
+            <img src="https://cdn-icons-png.flaticon.com/512/2786/2786289.png" alt="Salud Física">
+            <div class="card-body">
+                <h5 class="card-title">Salud Física</h5>
+                <p class="card-text">Conoce cómo mantener tu cuerpo fuerte y activo a través de ejercicio y nutrición adecuada.</p>
+                <a href="#" class="btn btn-primary">Ver más</a>
+            </div>
+        </div>
+
+
+        <div class="card">
+            <img src="https://cdn-icons-png.flaticon.com/512/4481/4481042.png" alt="Salud Mental">
+            <div class="card-body">
+                <h5 class="card-title">Salud Mental</h5>
+                <p class="card-text">Aprende a cuidar tu mente, gestionar el estrés y alcanzar un equilibrio emocional saludable.</p>
+                <a href="#" class="btn btn-primary">Ver más</a>
+            </div>
+        </div>
+
+
+        <div class="card">
+            <img src="https://cdn-icons-png.flaticon.com/512/860/860784.png" alt="Nutrición">
+            <div class="card-body">
+                <h5 class="card-title">Nutrición</h5>
+                <p class="card-text">Descubre los beneficios de una alimentación balanceada para mejorar tu energía y bienestar.</p>
+                <a href="#" class="btn btn-primary">Ver más</a>
+            </div>
+        </div>
+
+
+        <div class="card">
+            <img src="https://cdn-icons-png.flaticon.com/512/991/991970.png" alt="Bienestar Social">
+            <div class="card-body">
+                <h5 class="card-title">Bienestar Social</h5>
+                <p class="card-text">Fortalece tus relaciones y contribuye al bienestar colectivo de tu comunidad.</p>
+                <a href="#" class="btn btn-primary">Ver más</a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- BOTÓN DE REGRESO -->
+    <div class="text-center">
+        <a href="index.html" class="btn-back">Volver a la página principal</a>
+    </div>
+
+
+    <!-- FOOTER -->
+    <footer>
+        © 2025 José Miguel Arzate Villaseñor 3107 | Página creada con HTML, CSS y Bootstrap
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
